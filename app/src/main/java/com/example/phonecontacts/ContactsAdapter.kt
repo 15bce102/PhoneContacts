@@ -8,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-
-
+import com.example.phonecontacts.MainActivity.MainActivity.check1
 
 class ContactsAdapter(context: Context?, contacts: ArrayList<Contact>?) :
     ArrayAdapter<Contact?>(context!!, 0, contacts!! as List<Contact?>) {
@@ -35,10 +34,14 @@ class ContactsAdapter(context: Context?, contacts: ArrayList<Contact>?) :
         tvPhone.text = ""
 
         if (contact != null) {
-            if (contact.numbers.size > 0 && contact.numbers.get(0) != null) {
-                var locale = context.resources.configuration.locale.country
-                Log.d("country","country code +${locale}")
-                tvPhone.text = contact.numbers[0].number
+            if (contact.numbers.size > 0) {
+                var codeCheck = contact.numbers[0].number
+                if(codeCheck[0]!='+')
+                    tvPhone.text = "+"+ check1+contact.numbers[0].number
+                else{
+                    tvPhone.text = contact.numbers[0].number
+                }
+
             }
         }
         return view

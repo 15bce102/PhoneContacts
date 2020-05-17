@@ -14,12 +14,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.blongho.country_data.Country
 import com.blongho.country_data.World
+import com.example.phonecontacts.MainActivity.MainActivity.check1
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import java.util.*
 
 
 class MainActivity : Activity() {
-
+    object MainActivity{
+        var check1: Int? = null
+    }
     var listContacts: ArrayList<Contact>? = null
     var lvContacts: ListView? = null
     private var util: PhoneNumberUtil? = null
@@ -48,7 +51,9 @@ class MainActivity : Activity() {
         } else {
             // Permission has already been granted
 
-            getCountryCode()
+            check1 = getCountryCode()
+
+
             listContacts = ContactFetcher(this).fetchAll()
             lvContacts = findViewById<View>(R.id.list) as ListView
             val adapterContacts = ContactsAdapter(this, listContacts)
@@ -81,24 +86,23 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun getCountryCode(){
-        val tm =
-            this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+     private fun getCountryCode(): Int {
+        val tm = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val countryCode = (tm.simCountryIso.toUpperCase(Locale.US)).trim()
-        Log.d("hello","country +${countryCode}")
-
-
+        Log.d("hello",countryCode)
 
         if (util == null) {
             util = PhoneNumberUtil.createInstance(applicationContext)
 
         }
+        val phoneNumber = util!!.parse("9461066067", countryCode)
+         Log.d("hello","phone number value ${phoneNumber.countryCode}")
 
+         return phoneNumber.countryCode
 
-        val phoneNumber = util!!.parse("9461066067", "IN")
-        var check = util!!.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
-        Log.d("hello","country code +${check}")
     }
+
+
 
 }
 
